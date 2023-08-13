@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import {useNavigate} from 'react-router-dom'
+import { collapsed_Change } from '../../redux/actions/collapse'
+import { connect } from 'react-redux';
 import { Layout, Button, Dropdown, Space,Avatar  } from 'antd';
 import {
   MenuFoldOutlined,
@@ -9,13 +11,18 @@ import {
 } from '@ant-design/icons';
 const { Header} = Layout;
 
-export default function TopHeader() {
+function TopHeader(props) {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate()
 
   const changeCollapsed = () => {
-    setCollapsed(!collapsed)
+    setCollapsed((state) => {
+      props.collapsed_Change(!state)
+      return !state
+    })
   } 
+
+  console.log(props);
 
   const GoOut = () => {
     localStorage.removeItem('token')
@@ -74,3 +81,13 @@ export default function TopHeader() {
   </Header>
   )
 }
+
+
+const mapStateToProps = (state) => ({
+  collapse:state.collapsedReducer
+})
+const mapDispatchToProps = {
+  collapsed_Change
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(TopHeader)

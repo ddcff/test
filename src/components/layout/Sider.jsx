@@ -1,9 +1,10 @@
 import React,{useLayoutEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { connect } from 'react-redux';
 import { Layout, Menu } from 'antd';
 const { Sider } = Layout;
 
-export default function SiderMenu() {
+function SiderMenu(props) {
   const navigate = useNavigate()
 
   function getItem(label, key,  children, type) {
@@ -36,7 +37,7 @@ export default function SiderMenu() {
   },[])
 
   return (
-      <Sider trigger={null} collapsible>
+      <Sider trigger={null} collapsible collapsed={props.collapsed}>
         <div className="demo-logo-vertical" >
             <div className='title'>
                 谢鹏飞管理系统
@@ -52,3 +53,9 @@ export default function SiderMenu() {
       </Sider>
   )
 }
+
+const mapStateToProps = (state) => ({
+  collapsed: state.collapsedReducer
+})
+
+export default connect(mapStateToProps)(SiderMenu)
