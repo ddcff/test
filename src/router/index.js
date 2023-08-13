@@ -35,7 +35,7 @@ export default function Index() {
 //路由拦截函数
 function PrivateRoute() {
       //这里可以根据具体需求判断用户是否登录
-    const isAuthenticated = true;
+    const isAuthenticated = localStorage.getItem('token') ? true : false;
      return (
         <>
           { isAuthenticated ? <Outlet  /> : <Navigate to="/login" replace/>}

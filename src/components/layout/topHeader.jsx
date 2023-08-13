@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import { Layout, Button, Dropdown, Space,Avatar  } from 'antd';
 import {
   MenuFoldOutlined,
@@ -10,10 +11,16 @@ const { Header} = Layout;
 
 export default function TopHeader() {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate()
 
   const changeCollapsed = () => {
     setCollapsed(!collapsed)
   } 
+
+  const GoOut = () => {
+    localStorage.removeItem('token')
+    navigate('/login')
+  }
 
   //下拉数据
   const items = [
@@ -25,7 +32,7 @@ export default function TopHeader() {
     },
     {
       label: (
-        <div>退出</div>
+        <div onClick={GoOut}>退出</div>
       ),
       key: '1',
     },
@@ -41,12 +48,13 @@ export default function TopHeader() {
     <div style={{display:'flex',justifyContent:'space-between',padding:'0px 10px 0px 0px'}}>
       <Button
         type="text"
-        icon={collapsed ? <MenuUnfoldOutlined  onClick={() => changeCollapsed() }/> : <MenuFoldOutlined onClick={() => changeCollapsed() }/>}
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         style={{
           fontSize: '16px',
           width: 64,
           height: 64,
         }}
+        onClick={() => changeCollapsed() }
       />
       <div>
         <span style={{paddingRight:"15px"}}>欢迎谢鹏飞回来</span>
@@ -56,12 +64,10 @@ export default function TopHeader() {
               items
             }}
         >
-            <a onClick={(e) => e.preventDefault()}>
               <Space>
                 <Avatar size="large" icon={ <UserOutlined />} />
                 <DownOutlined />
               </Space>
-            </a>
         </Dropdown>
       </div>
     </div>

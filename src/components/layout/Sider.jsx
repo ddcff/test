@@ -1,42 +1,53 @@
-import React from 'react'
+import React,{useLayoutEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Layout, Menu } from 'antd';
-import {
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-  } from '@ant-design/icons';
 const { Sider } = Layout;
 
 export default function SiderMenu() {
+  const navigate = useNavigate()
+
+  function getItem(label, key,  children, type) {
+    return {
+      label,
+      key,
+      children,
+      type,
+    };
+  }
+
+  const Menuitems = [
+    getItem('首页', '/home'),
+    getItem('用户管理', '/user-manage', [
+      getItem('用户列表', '/user-manage/list'),
+    ]),
+    getItem('权限管理', '/right-manage',  [
+      getItem('角色列表', '/right-manage/Role/list'),
+      getItem('用户列表', 'right-manage/Right/list'),
+    ]),
+  ];
+
+  //侧边栏跳转
+  const Choose_menu = (e) => {
+    navigate(`${e.key}`)
+  }
+
+  useLayoutEffect(() => {
+    navigate('/home')
+  },[])
 
   return (
       <Sider trigger={null} collapsible>
         <div className="demo-logo-vertical" >
             <div className='title'>
-                谢鹏飞管理平台
+                谢鹏飞管理系统
             </div>
         </div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
+          defaultSelectedKeys={['/home']}
+          items={Menuitems}
+          onClick={ Choose_menu }
         />
       </Sider>
   )
